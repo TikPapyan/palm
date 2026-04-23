@@ -130,13 +130,13 @@ def FSR_xirm_NL(x1k, y1, xus, gradY, B, d, c, F2D, tau, tau10):
     x1 = np.real(ifft2(FX))
     return x1
 
-def estimate_c(irm, us, d=6):
+def estimate_c(irm, us, super_resolved_file_name_to_save, d=6):
     # FIX: Use np.max instead of np.linalg.norm to avoid giant numbers for large images
     y1 = irm / np.max(irm)
     y2 = us / np.max(us)
     n1, n2 = y2.shape
     yint = resize(y1, scale_factors=(d,d), interp_method=cubic)
-    plt.imsave('irm_600.png', yint, cmap='gray') # Save upsampled image
+    plt.imsave(super_resolved_file_name_to_save, yint, cmap='gray') # Save upsampled image
     Jx = convolve2d(yint, np.array([[-1, 1]]), mode='same', boundary='symm')
     Jy = convolve2d(yint, np.array([[-1], [1]]), mode='same', boundary='symm')
     gradY = np.sqrt(Jx**2 + Jy**2)
